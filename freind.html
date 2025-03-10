@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ค้นหาเพื่อน</title>
+    <!-- เพิ่มลิงก์ไปยังไฟล์ CSS ของ Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #ff7f32, #ffb74d);
+            color: white;
+        }
+        .card {
+            background: white;
+            color: black;
+            border-radius: 10px;
+        }
+        .btn-search {
+            background-color: #ff7f32;
+            border: none;
+        }
+        .btn-search:hover {
+            background-color: #ffb74d;
+        }
+        .friend-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .friend-item {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .friend-item button {
+            background-color: #ff7f32;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .friend-item button:hover {
+            background-color: #ff5722;
+        }
+    </style>
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card p-4" style="width: 100%; max-width: 500px;">
+            <h2 class="text-center mb-4">ค้นหาเพื่อน</h2>
+            <form id="searchForm">
+                <div class="mb-3">
+                    <label for="searchInput" class="form-label">ค้นหาชื่อเพื่อน</label>
+                    <input type="text" class="form-control" id="searchInput" placeholder="กรอกชื่อเพื่อนที่ต้องการค้นหา">
+                </div>
+                <button type="submit" class="btn btn-search w-100">ค้นหา</button>
+            </form>
+
+            <div class="friend-list mt-3" id="friendList">
+                <!-- ผลการค้นหาจะถูกแสดงที่นี่ -->
+            </div>
+
+            <div class="text-center mt-3">
+                <p>กลับไปที่ <a href="index.html">หน้าหลัก</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- เพิ่มลิงก์ไปยังไฟล์ JavaScript ของ Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ข้อมูลเพื่อนตัวอย่าง (สามารถปรับเปลี่ยนตามข้อมูลจริงในระบบ)
+        const friends = [
+            { name: "สมชาย", username: "somchai123" },
+            { name: "สุกัญญา", username: "sukanya45" },
+            { name: "อนันต์", username: "anant123" },
+            { name: "ธนาพัฒน์", username: "thanapat78" }
+        ];
+
+        // ฟังก์ชันสำหรับการค้นหาเพื่อน
+        document.getElementById("searchForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // ป้องกันการส่งฟอร์ม
+            const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+            const filteredFriends = friends.filter(friend => 
+                friend.name.toLowerCase().includes(searchTerm)
+            );
+            displayFriends(filteredFriends);
+        });
+
+        // ฟังก์ชันสำหรับแสดงผลลัพธ์การค้นหาเพื่อน
+        function displayFriends(friendsArray) {
+            const friendList = document.getElementById("friendList");
+            friendList.innerHTML = ''; // ล้างผลลัพธ์เดิม
+
+            if (friendsArray.length === 0) {
+                friendList.innerHTML = '<p>ไม่พบเพื่อนที่ค้นหา</p>';
+            } else {
+                friendsArray.forEach(friend => {
+                    const friendItem = document.createElement("div");
+                    friendItem.classList.add("friend-item");
+                    friendItem.innerHTML = `
+                        <div><strong>${friend.name}</strong></div>
+                        <div><small>@${friend.username}</small></div>
+                        <button onclick="addFriend('${friend.username}')">เพิ่มเพื่อน</button>
+                    `;
+                    friendList.appendChild(friendItem);
+                });
+            }
+        }
+
+        // ฟังก์ชันเพิ่มเพื่อน (สำหรับแสดงข้อความหรือการกระทำเมื่อกดปุ่มเพิ่มเพื่อน)
+        function addFriend(username) {
+            alert(`${username} ถูกเพิ่มเป็นเพื่อนแล้ว!`);
+        }
+    </script>
+</body>
+</html>
